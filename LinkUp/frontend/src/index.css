@@ -1,0 +1,167 @@
+:root {
+  /* Premium Cyber Mint & Forest Emerald - Light Mode */
+  --bg-primary: #e0f4f1; /* Soothing solid pastel mint-green background (100% non-white and organic!) */
+  --bg-secondary: #eefaf7; /* Elevated light minty-cream surfaces to stand out against mint background (100% non-white!) */
+  --text-primary: #0f5959; /* Deep readable forest emerald for primary headings */
+  --text-secondary: #189e90; /* Fresh cyber mint/teal for subheadings and secondary text */
+  --accent-primary: #0d8f80; /* Premium cyber mint brand color */
+  --accent-hover: #0a7064; /* Deep forest emerald hover state for buttons */
+  --accent-cyan: #9cebe1; /* Glowing light seafoam accent/border highlight */
+  --border-color: #bcece5; /* Subtle light mint-green border */
+  
+  --shadow-sm: 0 1px 2px 0 rgba(13, 143, 128, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(13, 143, 128, 0.08), 0 2px 4px -2px rgba(13, 143, 128, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(13, 143, 128, 0.12), 0 4px 6px -4px rgba(13, 143, 128, 0.06);
+
+  /* Global legacy variable mapping */
+  --bg-main: var(--bg-primary);
+  --bg-card: rgba(238, 250, 247, 0.85); /* Premium glass card surface with light minty-cream opacity */
+  --text-dark: var(--text-primary);
+  --text-gray: var(--text-secondary);
+  --border-light: var(--border-color);
+  --primary-blue: var(--accent-primary);
+  --primary-indigo: var(--accent-hover);
+  --card-shadow: var(--shadow-md);
+
+  /* Premium High-Contrast Footer Theme Elements */
+  --footer-bg: #0f5959; /* Elegant deep Forest Emerald solid block */
+  --footer-text: #eefaf7; /* High contrast clean minty-cream text */
+  --footer-text-secondary: #bcece5; /* Soothing seafoam details */
+  --footer-border: #0c4d4d; /* Subtle dark-emerald border line */
+}
+
+[data-theme='dark'] {
+  /* Premium Cyber Mint & Forest Emerald - Dark Mode */
+  --bg-primary: #051211; /* Deep obsidian forest green-black space background */
+  --bg-secondary: #0a1d1c; /* Rich deep forest emerald card panels */
+  --text-primary: #e6f7f4; /* Crisp minty near-white typography */
+  --text-secondary: #9cebe1; /* Luminescent light seafoam secondary text */
+  --accent-primary: #2ed4c0; /* Radiant glowing cyber mint brand color for active items */
+  --accent-hover: #9cebe1; /* High-contrast bright seafoam hover state */
+  --accent-cyan: #0d8f80; /* Solid organic forest emerald for deep shadows/glows */
+  --border-color: #0f3835; /* Subtle dark forest emerald border */
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+
+  /* Global legacy variable overrides for Dark Mode */
+  --bg-main: var(--bg-primary);
+  --bg-card: rgba(10, 29, 28, 0.75); /* Dark forest-emerald card backing with glass opacity */
+  --text-dark: var(--text-primary);
+  --text-gray: var(--text-secondary);
+  --border-light: var(--border-color);
+  --primary-blue: var(--accent-primary);
+  --primary-indigo: var(--accent-hover);
+  --card-shadow: var(--shadow-md);
+
+  /* Premium High-Contrast Footer Theme Elements - Dark Mode */
+  --footer-bg: #030c0b; /* Ultra-deep obsidian emerald background anchor */
+  --footer-text: #e6f7f4; /* High contrast crisp near-white */
+  --footer-text-secondary: #9cebe1; /* Luminescent seafoam details */
+  --footer-border: #071716; /* Deep dark border line */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+button, .btn-link {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  display: inline-block;
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background-color: transparent;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, var(--accent-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* GLOBAL MODERN FLOATING ACTION BUTTON (BACK BUTTON) */
+.modern-exit-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  cursor: pointer;
+  z-index: 10000;
+  transition: all 0.3s ease;
+}
+
+.modern-exit-fab:hover {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: 0 12px 40px rgba(24, 123, 124, 0.3);
+}

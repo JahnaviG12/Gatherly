@@ -1,0 +1,627 @@
+.teamhub-main-content{
+  padding:2rem;
+  display:flex;
+  flex-direction:column;
+  gap:2rem;
+  max-width:1500px;
+  margin:auto;
+}
+
+.teamhub-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.modern-exit-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-blue);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.modern-exit-fab:hover {
+  background: var(--primary-blue);
+  color: white;
+  box-shadow: 0 12px 40px rgba(14, 165, 233, 0.3);
+}
+
+.teamhub-header h1{
+  font-size:2rem;
+  font-weight:800;
+  color:var(--text-dark);
+}
+
+.teamhub-header p{
+  color:var(--text-gray);
+  margin-top:0.35rem;
+}
+
+.create-task-btn{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  border:none;
+  background:var(--primary-blue);
+  color:white;
+  padding:0.9rem 1.3rem;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.view-switch{
+  display:flex;
+  gap:0.75rem;
+}
+
+.view-switch button{
+  border:none;
+  background:var(--bg-card);
+  border:1px solid var(--border-light);
+  color:var(--text-dark);
+  padding:0.7rem 1.1rem;
+  border-radius:12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:0.45rem;
+  font-weight:700;
+}
+
+.view-switch button.active{
+  background:var(--primary-blue);
+  color:white;
+}
+
+.kanban-board{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+}
+
+.kanban-column{
+  background:var(--bg-card);
+  border:1px solid var(--border-light);
+  border-radius:22px;
+  padding:1rem;
+  min-height:500px;
+}
+
+.kanban-header{
+  margin-bottom:1rem;
+}
+
+.kanban-title{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  font-weight:800;
+  color:var(--text-dark);
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+.kanban-tasks{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+.task-card{
+  background:var(--bg-main);
+  border:1px solid var(--border-light);
+  border-radius:18px;
+  padding:1rem;
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.task-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+.task-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:0.8rem;
+}
+
+.priority{
+  padding:0.3rem 0.7rem;
+  border-radius:30px;
+  font-size:0.72rem;
+  font-weight:800;
+  text-transform:capitalize;
+}
+
+.priority.low{
+  background:#dbeafe;
+  color:#2563eb;
+}
+
+.priority.medium{
+  background:#fef3c7;
+  color:#d97706;
+}
+
+.priority.high{
+  background:#fee2e2;
+  color:#ef4444;
+}
+
+.task-card h3{
+  font-size:1rem;
+  color:var(--text-dark);
+  margin-bottom:0.6rem;
+}
+
+.task-card p{
+  font-size:0.85rem;
+  color:var(--text-gray);
+  line-height:1.5;
+}
+
+.task-footer{
+  margin-top:1rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.task-date{
+  display:flex;
+  align-items:center;
+  gap:0.35rem;
+  font-size:0.8rem;
+  color:var(--text-gray);
+}
+
+.task-list-view{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+.list-task-card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+  padding:1rem 1.3rem;
+  border-radius:18px;
+  background:var(--bg-card);
+  border:1px solid var(--border-light);
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.list-task-card:hover{
+  transform:translateY(-3px);
+}
+
+.list-task-left{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+
+.list-task-left h3{
+  font-size:1rem;
+  color:var(--text-dark);
+}
+
+.list-task-left p{
+  font-size:0.82rem;
+  color:var(--text-gray);
+}
+
+.list-task-right{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  font-size:0.85rem;
+  color:var(--text-gray);
+}
+
+.task-drawer-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:1000;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.task-drawer{
+  width:420px;
+  height:100%;
+  background:var(--bg-card);
+  padding:1.5rem;
+  overflow-y:auto;
+}
+
+.drawer-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
+}
+
+.drawer-header h2{
+  font-size:1.3rem;
+  color:var(--text-dark);
+}
+
+.drawer-header button{
+  border:none;
+  background:none;
+  cursor:pointer;
+  color:var(--text-dark);
+}
+
+.drawer-body{
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+}
+
+.drawer-section label{
+  display:block;
+  margin-bottom:0.5rem;
+  font-size:0.78rem;
+  font-weight:800;
+  color:var(--text-gray);
+  text-transform:uppercase;
+}
+
+.drawer-section p{
+  color:var(--text-dark);
+  line-height:1.6;
+}
+
+.drawer-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+}
+
+.drawer-grid div{
+  background:var(--bg-main);
+  border:1px solid var(--border-light);
+  border-radius:14px;
+  padding:1rem;
+}
+
+.drawer-grid label{
+  display:block;
+  margin-bottom:0.4rem;
+  font-size:0.72rem;
+  font-weight:800;
+  color:var(--text-gray);
+}
+
+.task-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:1200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.task-modal{
+  width:100%;
+  max-width:520px;
+  background:var(--bg-card);
+  border-radius:24px;
+  padding:1.5rem;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
+}
+
+.modal-header h2{
+  font-size:1.3rem;
+  color:var(--text-dark);
+}
+
+.modal-header button{
+  border:none;
+  background:none;
+  cursor:pointer;
+}
+
+.modal-form{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+.modal-form input,
+.modal-form textarea,
+.modal-form select{
+  width:100%;
+  border:1px solid var(--border-light);
+  background:var(--bg-main);
+  padding:0.9rem 1rem;
+  border-radius:14px;
+  outline:none;
+  color:var(--text-dark);
+}
+
+.modal-form textarea{
+  min-height:120px;
+  resize:none;
+}
+
+.submit-task-btn{
+  border:none;
+  background:var(--primary-blue);
+  color:white;
+  padding:1rem;
+  border-radius:14px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.teamhub-empty{
+  min-height:80vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:1rem;
+}
+
+.teamhub-empty h2{
+  font-size:1.5rem;
+  color:var(--text-dark);
+}
+
+.teamhub-empty p{
+  color:var(--text-gray);
+}
+
+.teamhub-open-btn{
+  background:var(--primary-blue);
+  color:white;
+  text-decoration:none;
+  padding:0.9rem 1.5rem;
+  border-radius:14px;
+  font-weight:700;
+}
+
+@media(max-width:1200px){
+
+  .kanban-board{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:768px){
+
+  .teamhub-main-content{
+    padding:1rem;
+  }
+
+  .kanban-board{
+    grid-template-columns:1fr;
+  }
+
+  .task-drawer{
+    width:100%;
+  }
+
+  .list-task-card{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .drawer-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+/* ── CALENDAR VIEW ───────────────────────────────────────── */
+.cal-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.cal-month-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  min-width: 220px;
+  text-align: center;
+  margin: 0;
+}
+
+.cal-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-main);
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cal-nav-btn:hover {
+  background: var(--primary-blue);
+  color: white;
+  border-color: var(--primary-blue);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.cal-day-header {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  padding: 0.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+.cal-cell {
+  min-height: 90px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: box-shadow 0.2s;
+}
+
+.cal-cell.empty {
+  background: transparent;
+  border: none;
+}
+
+.cal-cell.today {
+  background: rgba(14, 165, 233, 0.07);
+  border-color: var(--primary-blue);
+}
+
+.cal-cell.has-tasks {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.cal-day-num {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.cal-cell.today .cal-day-num {
+  background: var(--primary-blue);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.cal-task-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.cal-chip {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+
+.cal-chip.more {
+  background: var(--text-gray) !important;
+  opacity: 0.7;
+}
+
+/* LEGEND */
+.cal-legend {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1rem;
+}
+
+.cal-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-gray);
+  text-transform: capitalize;
+}
+
+.cal-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media(max-width: 768px) {
+  .cal-grid {
+    gap: 3px;
+  }
+  .cal-cell {
+    min-height: 60px;
+    padding: 0.3rem;
+  }
+  .cal-chip {
+    font-size: 0.6rem;
+    padding: 1px 4px;
+  }
+}

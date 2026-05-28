@@ -1,0 +1,134 @@
+/* InfoPages.css - Shared styles for informational pages */
+.info-page {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.info-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--accent-primary);
+}
+
+.info-content {
+  flex: 1;
+  max-width: 800px; /* Keep text readable */
+  margin: 0 auto;
+  padding: 4rem 2rem 8rem 2rem;
+}
+
+.info-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.info-header h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.info-header .subtitle {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+/* Sections */
+.info-section {
+  margin-bottom: 4rem;
+}
+
+.info-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.info-section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  opacity: 0.9;
+}
+
+/* Grid layouts for cards */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.info-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-card h3 {
+  font-size: 1.25rem;
+  color: var(--accent-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.info-card p {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+/* Lists */
+.info-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-list li {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  opacity: 0.9;
+}

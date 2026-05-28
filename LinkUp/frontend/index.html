@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>frontend</title>
+  </head>
+  <style>
+    /* Hide Google Translate top bar and widget */
+    .skiptranslate iframe,
+    .goog-te-banner-frame.skiptranslate,
+    #google_translate_element {
+      display: none !important;
+    }
+    body {
+      top: 0px !important; 
+    }
+  </style>
+  <body>
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element');
+      }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx?v=2026-05-25_3"></script>
+  </body>
+</html>

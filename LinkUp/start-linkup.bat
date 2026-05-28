@@ -1,0 +1,16 @@
+@echo off
+echo Starting LinkUp Platform...
+
+echo Starting Backend Server...
+cd backend
+start cmd /k "npm start"
+
+echo Starting Frontend Server...
+cd ../frontend
+start cmd /k "npm run dev"
+
+echo Waiting for servers to initialize...
+timeout /t 1 /nobreak > NUL
+
+echo Opening LinkUp in your browser...
+start http://localhost:5175

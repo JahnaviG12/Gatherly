@@ -1,0 +1,358 @@
+/* RichNotesEditor.css */
+
+/* ── WRAPPER ── */
+.rne-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+/* ── LIST HEADER ── */
+.rne-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.rne-heading {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin: 0 0 0.2rem;
+}
+
+.rne-subhead {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+/* ── NEW NOTE BUTTON ── */
+.rne-new-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(13, 143, 128, 0.35);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.rne-new-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 143, 128, 0.45);
+}
+
+/* ── EMPTY STATE ── */
+.rne-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--bg-main);
+  border-radius: 20px;
+  border: 2px dashed var(--border-light);
+}
+
+.rne-empty-icon {
+  color: var(--accent-primary);
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.rne-empty-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.4rem;
+}
+
+.rne-empty-sub {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+/* ── NOTE CARDS GRID ── */
+.rne-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.rne-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.rne-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(13, 143, 128, 0.08);
+  border-color: var(--accent-primary);
+}
+
+.rne-card-delete {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: 8px;
+  color: #ef4444;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.rne-card:hover .rne-card-delete {
+  opacity: 1;
+}
+
+.rne-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  padding-right: 2rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rne-card-preview {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.rne-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-gray);
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.6rem;
+  margin-top: auto;
+}
+
+.rne-card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ── EDITOR VIEW WRAPPER ── */
+.rne-editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 520px;
+  overflow: hidden;
+}
+
+/* ── EDITOR TOPBAR ── */
+.rne-editor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+
+.rne-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rne-back-btn:hover {
+  background: var(--bg-main);
+  color: var(--text-dark);
+}
+
+.rne-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(13, 143, 128, 0.3);
+  transition: all 0.2s;
+}
+
+.rne-save-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(13, 143, 128, 0.4);
+}
+
+.rne-save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── EDITOR BODY ── */
+.rne-editor-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  background: var(--bg-main);
+}
+
+.rne-title-input {
+  border: none;
+  border-bottom: 2px solid var(--border-light);
+  background: transparent;
+  outline: none;
+  padding: 1.25rem 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  font-family: inherit;
+  transition: border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.rne-title-input:focus {
+  border-bottom-color: var(--accent-primary);
+}
+
+.rne-title-input::placeholder {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+/* ── QUILL CONTAINER ── */
+.rne-quill-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.rne-quill-container .ql-container {
+  flex: 1;
+  overflow-y: auto;
+  border: none !important;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+}
+
+.rne-quill-container .ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  background: var(--bg-card);
+  padding: 0.6rem 1rem;
+  flex-shrink: 0;
+}
+
+.rne-quill-container .ql-editor {
+  min-height: 300px;
+  padding: 1.5rem;
+  outline: none;
+}
+
+.rne-quill-container .ql-editor.ql-blank::before {
+  color: #cbd5e1;
+  font-style: normal;
+  font-size: 0.95rem;
+}
+
+/* Toolbar button styles */
+.rne-quill-container .ql-toolbar button:hover,
+.rne-quill-container .ql-toolbar button.ql-active {
+  color: var(--accent-primary) !important;
+}
+
+.rne-quill-container .ql-toolbar .ql-stroke {
+  stroke: var(--text-gray);
+}
+
+.rne-quill-container .ql-toolbar button:hover .ql-stroke,
+.rne-quill-container .ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--accent-primary) !important;
+}
+
+.rne-quill-container .ql-toolbar .ql-fill {
+  fill: var(--text-gray);
+}
+
+.rne-quill-container .ql-toolbar button:hover .ql-fill,
+.rne-quill-container .ql-toolbar button.ql-active .ql-fill {
+  fill: var(--accent-primary) !important;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .rne-quill-container .ql-toolbar {
+  background: var(--bg-secondary);
+  border-color: var(--border-color) !important;
+}
+
+[data-theme='dark'] .rne-quill-container .ql-container {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .rne-quill-container .ql-editor.ql-blank::before {
+  color: #475569;
+}
+
+[data-theme='dark'] .rne-quill-container .ql-toolbar .ql-stroke {
+  stroke: #94a3b8;
+}
+
+[data-theme='dark'] .rne-quill-container .ql-toolbar .ql-fill {
+  fill: #94a3b8;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "bca-final",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server/index.js",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "nodemon server/index.js",
+    "client": "vite"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.x.x",
+    "socket.io": "^4.x.x",
+    "socket.io-client": "^4.x.x",
+    "uuid": "^9.x.x"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.x.x",
+    "nodemon": "^3.x.x"
+  }
+}
