@@ -13,13 +13,6 @@ export default defineConfig({
     strictPort: true,
     host: true,
   },
-  resolve: {
-    alias: {
-      'react': path.resolve(__dirname, 'node_modules/react'),
-      'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
-    },
-    dedupe: ['react', 'react-dom'],
-  },
   optimizeDeps: {
     include: [
       'react',

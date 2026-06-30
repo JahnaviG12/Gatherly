@@ -1,17 +1,6 @@
 /* UserDashboard.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-:root {
-  --bg-main: var(--bg-primary);
-  --bg-card: rgba(238, 250, 247, 0.85); /* Premium glass card surface with light minty-cream opacity */
-  --text-dark: var(--text-primary);
-  --text-gray: var(--text-secondary);
-  --border-light: var(--border-color);
-  --primary-blue: var(--accent-primary);
-  --primary-indigo: var(--accent-hover);
-  --card-shadow: var(--shadow-md);
-}
-
 .dashboard-wrapper {
   min-height: 100vh;
   background-color: var(--bg-main);
