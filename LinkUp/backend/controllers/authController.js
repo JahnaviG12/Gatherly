@@ -36,19 +36,6 @@ exports.login = async (req, res) => {
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
 
-/* ── Admin Login ── POST /api/auth/admin/login */
-exports.adminLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password)))
-      return res.status(401).json({ message: 'Invalid email or password' });
-    if (user.role !== 'admin')
-      return res.status(403).json({ message: 'Access denied. Admin privileges required.' });
-    res.json({ _id: user._id, username: user.username, email: user.email, role: user.role, token: genToken(user._id, user.role) });
-  } catch (err) { res.status(500).json({ message: err.message }); }
-};
-
 /* ── Update Profile ── PUT /api/auth/profile */
 exports.updateProfile = async (req, res) => {
   try {
