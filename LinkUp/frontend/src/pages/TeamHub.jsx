@@ -109,7 +109,13 @@ const TeamHub = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/spaces').then(r => r.json()).then(data => Array.isArray(data) && setAllWorkspaces(data)).catch(() => {});
+    if (!currentUser) return;
+    const uid = currentUser.email || currentUser.username;
+    if (!uid) return;
+    fetch(`http://localhost:5000/api/spaces/user/${encodeURIComponent(uid)}`)
+      .then(r => r.json())
+      .then(data => Array.isArray(data) && setAllWorkspaces(data))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {

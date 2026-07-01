@@ -30,6 +30,56 @@ const WorkspaceHub = ({
   fallbackImages,
   slideIndex
 }) => {
+  // Collect all activities from all workspaces
+  const allActivities = [];
+  allWorkspaces.forEach(ws => {
+    if (ws && Array.isArray(ws.activities)) {
+      ws.activities.forEach(act => {
+        allActivities.push({
+          ...act,
+          workspaceName: ws.name,
+          workspaceId: ws._id || ws.id
+        });
+      });
+    }
+  });
+
+  // Sort activities by time/date descending
+  allActivities.sort((a, b) => new Date(b.createdAt || b.time || 0) - new Date(a.createdAt || a.time || 0));
+
+  // Dynamic Storage Calculation
+  let mediaCount = 0;
+  let docCount = 0;
+  allWorkspaces.forEach(ws => {
+    if (!ws) return;
+    const wsId = ws._id || ws.id;
+    try {
+      const gallery = JSON.parse(localStorage.getItem(`gallery_${wsId}`) || '[]');
+      mediaCount += gallery.length;
+    } catch (e) {}
+    
+    if (Array.isArray(ws.notes)) {
+      docCount += ws.notes.length;
+    }
+    if (Array.isArray(ws.chatMessages)) {
+      ws.chatMessages.forEach(msg => {
+        if (msg && msg.file) {
+          if (msg.file.type?.startsWith('image/') || msg.file.type?.startsWith('video/')) {
+            mediaCount++;
+          } else {
+            docCount++;
+          }
+        }
+      });
+    }
+  });
+
+  const mediaGB = parseFloat((mediaCount * 0.05).toFixed(2)); // 50MB per media item/file
+  const docGB = parseFloat((docCount * 0.01).toFixed(2)); // 10MB per document/note
+  const totalUsedGB = parseFloat((mediaGB + docGB).toFixed(2));
+  const maxStorageGB = 10; // 10 GB limit
+  const progressPercent = Math.min((totalUsedGB / maxStorageGB) * 100, 100);
+
   return (
     <>
       <div className="workspace-main-column">
@@ -220,29 +270,28 @@ const WorkspaceHub = ({
 
         {/* GLOBAL ACTIVITY FEED */}
         <div className="global-activity-card">
-          <h3 style={{ marginBottom:0 }}>Recent Network Activity</h3>
-          <div className="global-activity-list">
-            <div className="global-activity-item">
-              <div className="global-activity-icon"><Sparkles size={16}/></div>
-              <div className="global-activity-text">
-                <p><strong>Sarah Wilson</strong> created <strong>Goa Trip 2026</strong></p>
-                <span>2 hours ago</span>
+          <h3 style={{ marginBottom: 0 }}>Recent Network Activity</h3>
+          <div className="global-activity-list" style={{ marginTop: '0.5rem' }}>
+            {allActivities.length === 0 ? (
+              <div style={{ padding: '1.5rem 1rem', textAlign: 'center', color: 'var(--text-gray)' }}>
+                <Activity size={24} style={{ margin: '0 auto 0.5rem', opacity: 0.5 }} />
+                <p style={{ fontSize: '0.8rem', margin: 0 }}>No recent activity. Actions in your workspaces will show here.</p>
               </div>
-            </div>
-            <div className="global-activity-item">
-              <div className="global-activity-icon"><CheckSquare size={16}/></div>
-              <div className="global-activity-text">
-                <p><strong>Mike</strong> completed 3 tasks in <strong>Project Alpha</strong></p>
-                <span>4 hours ago</span>
-              </div>
-            </div>
-            <div className="global-activity-item">
-              <div className="global-activity-icon"><ImageIcon size={16}/></div>
-              <div className="global-activity-text">
-                <p>12 new photos uploaded to <strong>Alumni Meet</strong></p>
-                <span>Yesterday</span>
-              </div>
-            </div>
+            ) : (
+              allActivities.slice(0, 5).map((act, idx) => (
+                <div className="global-activity-item" key={act.id || idx}>
+                  <div className="global-activity-icon">
+                    {act.type === 'photo' || act.action?.includes('image') ? <ImageIcon size={14}/> :
+                     act.type === 'task' || act.action?.includes('task') ? <CheckSquare size={14}/> :
+                     <Sparkles size={14}/>}
+                  </div>
+                  <div className="global-activity-text">
+                    <p><strong>{act.user}</strong> {act.action} in <strong>{act.workspaceName}</strong></p>
+                    <span>{act.time || (act.createdAt ? new Date(act.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently')}</span>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -251,21 +300,30 @@ const WorkspaceHub = ({
           <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Storage Usage</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-              <span style={{ fontSize: '2.2rem', fontWeight: 900, color: 'var(--accent-primary)', lineHeight: 1 }}>45<span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>.2 GB</span></span>
-              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>of 100 GB</span>
+              <span style={{ fontSize: '2.2rem', fontWeight: 900, color: 'var(--accent-primary)', lineHeight: 1 }}>
+                {totalUsedGB.toFixed(1)}
+                <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}> GB</span>
+              </span>
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>of {maxStorageGB} GB</span>
             </div>
             <div className="progress-bar" style={{ height: '10px', background: 'var(--bg-primary)', borderRadius: '5px', overflow: 'hidden' }}>
               <motion.div
                 className="progress-fill"
-                initial={{width: 0}}
-                animate={{width: '45.2%'}}
-                transition={{duration: 1, ease: "easeOut"}}
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercent}%` }}
+                transition={{ duration: 1, ease: "easeOut" }}
                 style={{ height: '100%', background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-hover))' }}
               ></motion.div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 700, marginTop: '0.5rem' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><div style={{ width:'10px', height:'10px', borderRadius:'3px', background:'var(--accent-primary)' }}></div> Media (28GB)</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><div style={{ width:'10px', height:'10px', borderRadius:'3px', background:'var(--accent-hover)' }}></div> Docs (17.2GB)</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <div style={{ width: '10px', height: '10px', borderRadius: '3px', background: 'var(--accent-primary)' }}></div>
+                Media ({mediaGB.toFixed(2)} GB)
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <div style={{ width: '10px', height: '10px', borderRadius: '3px', background: 'var(--accent-hover)' }}></div>
+                Docs ({docGB.toFixed(2)} GB)
+              </span>
             </div>
             <button className="btn-outline" style={{ marginTop: '0.5rem', width: '100%', padding: '0.75rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700 }}>Upgrade Storage</button>
           </div>

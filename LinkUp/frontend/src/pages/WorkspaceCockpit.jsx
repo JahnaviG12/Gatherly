@@ -29,6 +29,25 @@ const WorkspaceCockpit = ({
     '--accent-hover': themeColor.startsWith('#') ? `${themeColor}dd` : 'var(--accent-hover)'
   };
 
+  // Dynamic progress & task stats calculation to avoid hardcoded statistics discrepancies
+  const totalTasks = Array.isArray(workspaceTasks) ? workspaceTasks.length : 0;
+  const completedTasks = Array.isArray(workspaceTasks) ? workspaceTasks.filter(t => t.status === 'done' || t.status === 'completed').length : 0;
+  const calculatedProgress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  const getTimeString = () => {
+    if (selectedWorkspace?.time) return selectedWorkspace.time;
+    if (selectedWorkspace?.createdAt) {
+      const diff = new Date() - new Date(selectedWorkspace.createdAt);
+      const diffMins = Math.floor(diff / 60000);
+      if (diffMins < 60) return `${diffMins || 1}m ago`;
+      const diffHours = Math.floor(diffMins / 60);
+      if (diffHours < 24) return `${diffHours}h ago`;
+      const diffDays = Math.floor(diffHours / 24);
+      return `Created ${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+    }
+    return "Active";
+  };
+
   return (
     <div className="workspace-page-container" style={customThemeStyles}>
 
@@ -82,9 +101,9 @@ const WorkspaceCockpit = ({
                   <span><Calendar size={14}/> Created by {currentUser.username}</span>
                 </div>
                 <div className="cockpit-progress-row">
-                  <span>{selectedWorkspace.progress || 65}% Planned</span>
-                  <div className="progress-bar-container"><div className="progress-fill" style={{width: `${selectedWorkspace.progress || 65}%`}}></div></div>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><Clock size={14}/> 3 Days Left</span>
+                  <span>{calculatedProgress}% Planned</span>
+                  <div className="progress-bar-container"><div className="progress-fill" style={{width: `${calculatedProgress}%`}}></div></div>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><Clock size={14}/> {getTimeString()}</span>
                 </div>
                 <div className="cockpit-avatars-row">
                   <div className="cockpit-avatars">
@@ -216,7 +235,7 @@ const WorkspaceCockpit = ({
               <h4>This week in {selectedWorkspace.name}</h4>
               <ul className="ai-summary-list">
                 <li>{`Workspace has ${membersArr.length} active member${membersArr.length !== 1 ? 's' : ''}.`}</li>
-                <li>{`Overall progress is at ${selectedWorkspace.progress || 0}% with ${selectedWorkspace.stats?.tasksCompleted || 0}/${selectedWorkspace.stats?.tasksTotal || 0} tasks completed.`}</li>
+                <li>{`Overall progress is at ${calculatedProgress}% with ${completedTasks}/${totalTasks} tasks completed.`}</li>
                 <li>{`${(selectedWorkspace.chatMessages || []).length > 0 ? `${(selectedWorkspace.chatMessages || []).length} messages exchanged.` : 'Be the first to start a discussion!'}`}</li>
               </ul>
               <div className="ai-sparkle"><Sparkle size={20}/></div>

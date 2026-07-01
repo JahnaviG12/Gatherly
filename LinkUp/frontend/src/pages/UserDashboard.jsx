@@ -64,6 +64,15 @@ const UserDashboard = () => {
     JSON.parse(localStorage.getItem('gatherly_notifications') || '[]')
   );
 
+  const unreadNotifsCount = React.useMemo(() => {
+    try {
+      const readIds = JSON.parse(localStorage.getItem('gatherly_read_notifs') || '[]');
+      return notifications.filter(n => !readIds.includes(n.id || n._id)).length;
+    } catch {
+      return notifications.length;
+    }
+  }, [notifications]);
+
   let user = {};
   try { user = JSON.parse(localStorage.getItem('gatherly_user') || '{}'); } catch (e) { console.error(e); }
 
@@ -191,7 +200,7 @@ const UserDashboard = () => {
               </div>
               <div className="stat-pill">
                 <div className="stat-icon-box"><Bell size={18} /></div>
-                <div className="stat-text"><strong>5</strong><span>New Updates</span></div>
+                <div className="stat-text"><strong>{unreadNotifsCount}</strong><span>New Updates</span></div>
               </div>
             </div>
             <div className="hero-actions">

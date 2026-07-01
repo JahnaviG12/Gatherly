@@ -18,10 +18,24 @@ const TOOLS = [
 ];
 
 function WorkspaceToolsPanel({
-  workspace, currentUser, activeTool, setActiveTool, onClose, socket, navigate, chatMessage, setChatMessage, activeChannel, setActiveChannel, unreadChannels, setUnreadChannels, getFilteredMessages, handleSendChatMessage, handleFileUpload, handleVoiceNote, isRecording, showEmojis, setShowEmojis, fileInputRef, workspaceTasks, workspaceExpenses, handleVotePoll, handleCreatePoll, aiInput, setAiInput, handleSendAiMessage, extractedAiMessages, handleExtractTasks, updateWorkspaceData, getSpaceId, setSelectedWorkspace, autoJoinCall, setAutoJoinCall,
+  workspace, currentUser, activeTool, setActiveTool, onClose, socket, navigate, chatMessage, setChatMessage, activeChannel, setActiveChannel, unreadChannels, setUnreadChannels, getFilteredMessages, handleSendChatMessage, handleFileUpload, handleVoiceNote, isRecording, showEmojis, setShowEmojis, fileInputRef, workspaceTasks, workspaceExpenses, handleVotePoll, handleCreatePoll, aiInput, setAiInput, handleSendAiMessage, extractedAiMessages, handleExtractTasks, handleExtractExpenses, handlePinLocation, updateWorkspaceData, getSpaceId, setSelectedWorkspace, autoJoinCall, setAutoJoinCall,
 }) {
   const [mapSearchInput, setMapSearchInput] = useState('');
   const [mapQuery, setMapQuery] = useState('');
+
+  const getLocationsFromText = (text) => {
+    const regex = /\*\*(?:\d+\.\s+)?([^*()]+)(?:\([^)]+\))?\*\*/g;
+    const matches = [];
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const loc = match[1].trim();
+      if (loc && (loc.toLowerCase().includes('resort') || loc.toLowerCase().includes('hotel') || loc.toLowerCase().includes('retreat') || loc.toLowerCase().includes('park') || loc.toLowerCase().includes('beach') || loc.toLowerCase().includes('lake') || loc.toLowerCase().includes('center') || loc.toLowerCase().includes('villa') || loc.toLowerCase().includes('camp'))) {
+        matches.push(loc);
+      }
+    }
+    return [...new Set(matches)];
+  };
+
   const resolveMemberInfo = (m) => {
     if (!m) return { name: '', isMe: false };
     const name = typeof m === 'object' ? (m.name || m.email || '') : String(m);
@@ -231,10 +245,24 @@ function WorkspaceToolsPanel({
                   <div key={i} style={{ background: msg.role === 'user' ? '#14b8a6' : 'var(--bg-card)', color: msg.role === 'user' ? 'white' : 'var(--text-dark)', padding: '1.5rem', borderRadius: '16px', border: msg.role === 'user' ? 'none' : '1px solid var(--border-light)', maxWidth: '80%', alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
                     {msg.role === 'ai' && <Brain size={24} color="#14b8a6" style={{ marginBottom: '0.5rem' }} />}
                     <p style={{ margin: 0, lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{msg.text}</p>
-                    {msg.role === 'ai' && msg.text.match(/^[-*] |^\d+\. /m) && (
-                      <button onClick={() => !extractedAiMessages[msg.text] && handleExtractTasks(msg.text)} disabled={extractedAiMessages[msg.text]} style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: extractedAiMessages[msg.text] ? 'var(--bg-main)' : 'linear-gradient(135deg,#14b8a6,#0d9488)', color: extractedAiMessages[msg.text] ? '#14b8a6' : 'white', border: extractedAiMessages[msg.text] ? '1px solid #14b8a6' : 'none', borderRadius: '20px', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        {extractedAiMessages[msg.text] ? <><CheckCircle size={14} />Tasks Created</> : <><Wand2 size={14} />Create Tasks from List</>}
-                      </button>
+                    {msg.role === 'ai' && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem' }}>
+                        {msg.text.match(/^[-*] |^\d+\. /m) && (
+                          <button type="button" onClick={() => !extractedAiMessages[msg.text] && handleExtractTasks(msg.text)} disabled={extractedAiMessages[msg.text]} style={{ padding: '0.5rem 1rem', background: extractedAiMessages[msg.text] ? 'var(--bg-main)' : 'linear-gradient(135deg,#14b8a6,#0d9488)', color: extractedAiMessages[msg.text] ? '#14b8a6' : 'white', border: extractedAiMessages[msg.text] ? '1px solid #14b8a6' : 'none', borderRadius: '20px', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            {extractedAiMessages[msg.text] ? <><CheckCircle size={14} />Tasks Created</> : <><Wand2 size={14} />Create Tasks from List</>}
+                          </button>
+                        )}
+                        {(msg.text.includes('₹') || msg.text.includes('$') || msg.text.toLowerCase().includes('rs') || msg.text.toLowerCase().includes('inr') || msg.text.toLowerCase().includes('cost') || msg.text.toLowerCase().includes('price') || msg.text.toLowerCase().includes('budget')) && (
+                          <button type="button" onClick={() => !extractedAiMessages[`expense_${msg.text}`] && handleExtractExpenses(msg.text)} disabled={extractedAiMessages[`expense_${msg.text}`]} style={{ padding: '0.5rem 1rem', background: extractedAiMessages[`expense_${msg.text}`] ? 'var(--bg-main)' : 'linear-gradient(135deg,#f59e0b,#d97706)', color: extractedAiMessages[`expense_${msg.text}`] ? '#f59e0b' : 'white', border: extractedAiMessages[`expense_${msg.text}`] ? '1px solid #f59e0b' : 'none', borderRadius: '20px', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            {extractedAiMessages[`expense_${msg.text}`] ? <><CheckCircle size={14} />Expenses Divided</> : <><DollarSign size={14} />Divide Expenses from List</>}
+                          </button>
+                        )}
+                        {getLocationsFromText(msg.text).map((loc) => (
+                          <button key={loc} type="button" onClick={() => handlePinLocation(loc)} style={{ padding: '0.5rem 1rem', background: 'linear-gradient(135deg,#f43f5e,#e11d48)', color: 'white', border: 'none', borderRadius: '20px', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <MapPinned size={14} /> Pin "{loc}" to Map
+                          </button>
+                        ))}
+                      </div>
                     )}
                   </div>
                 ))}

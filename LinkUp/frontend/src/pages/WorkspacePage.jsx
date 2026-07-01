@@ -77,6 +77,8 @@ const WorkspacePage = () => {
     handleSendChatMessage,
     handleSendAiMessage,
     handleExtractTasks,
+    handleExtractExpenses,
+    handlePinLocation,
     handleVotePoll,
     handleCreatePoll,
     submitCreatePoll,
@@ -270,6 +272,7 @@ const WorkspacePage = () => {
             handleVotePoll={handleVotePoll} handleCreatePoll={handleCreatePoll}
             aiInput={aiInput} setAiInput={setAiInput} handleSendAiMessage={handleSendAiMessage}
             extractedAiMessages={extractedAiMessages} handleExtractTasks={handleExtractTasks}
+            handleExtractExpenses={handleExtractExpenses} handlePinLocation={handlePinLocation}
             updateWorkspaceData={updateWorkspaceData} getSpaceId={getSpaceId} setSelectedWorkspace={setSelectedWorkspace}
             autoJoinCall={autoJoinCall} setAutoJoinCall={setAutoJoinCall}
           />

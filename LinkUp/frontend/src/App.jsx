@@ -20,6 +20,9 @@ import HistoryPage      from './pages/HistoryPage';
 import UserLayout       from './components/UserLayout';
 import Footer           from './components/Footer';
 import InvitePage       from './pages/InvitePage';
+import Privacy          from './pages/Privacy';
+import Terms            from './pages/Terms';
+import Cookies          from './pages/Cookies';
 
 /* ── Simple page wrapper for static content routes ── */
 const PageTemplate = ({ title, content }) => (
@@ -135,9 +138,9 @@ function App() {
               <Route path="/features" element={<Features />} />
               <Route path="/careers"  element={<Careers />} />
               <Route path="/press"    element={<PressMedia />} />
-              <Route path="/privacy"  element={<PageTemplate title="Privacy Policy" content="Your data is yours. We do not sell your personal information to third parties." />} />
-              <Route path="/terms"    element={<PageTemplate title="Terms of Service" content="By using Gatherly, you agree to our community guidelines and terms of service." />} />
-              <Route path="/cookies"  element={<PageTemplate title="Cookie Policy" content="We use essential cookies to keep you logged in and ensure security." />} />
+              <Route path="/privacy"  element={<Privacy />} />
+              <Route path="/terms"    element={<Terms />} />
+              <Route path="/cookies"  element={<Cookies />} />
             </Routes>
           </div>
           <Footer />

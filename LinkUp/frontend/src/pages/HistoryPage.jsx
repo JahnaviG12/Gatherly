@@ -9,6 +9,7 @@ const HistoryPage = () => {
   const navigate = useNavigate();
   const { workspaceId } = useParams();
   const [activeWorkspace, setActiveWorkspace] = useState(null);
+  const currentUser = JSON.parse(localStorage.getItem('gatherly_user') || 'null');
 
   // Determine workspace context from URL params or localStorage
   useEffect(() => {
@@ -42,8 +43,18 @@ const HistoryPage = () => {
       space.status === 'completed' || space.isArchived === true || space.progress >= 100
     );
     
+    if (!currentUser) {
+      setHistorySpaces(completed);
+      return;
+    }
+    const uid = currentUser.email || currentUser.username;
+    if (!uid) {
+      setHistorySpaces(completed);
+      return;
+    }
+
     // Fetch from backend
-    fetch('http://localhost:5000/api/spaces')
+    fetch(`http://localhost:5000/api/spaces/user/${encodeURIComponent(uid)}`)
       .then(res => res.json())
       .then(data => {
         const backendCompleted = data.filter(space => 

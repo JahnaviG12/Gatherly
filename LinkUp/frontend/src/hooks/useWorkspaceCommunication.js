@@ -117,6 +117,90 @@ export const useWorkspaceCommunication = ({
     alert(`Successfully added ${tasksToCreate.length} tasks to your Kanban board!`);
   };
 
+  const handleExtractExpenses = async (text) => {
+    if (!selectedWorkspace) return;
+    const expenseLines = text.split('\n').filter(l => {
+      const lower = l.toLowerCase();
+      return lower.includes('₹') || lower.includes('$') || lower.includes('rs') || lower.includes('inr') || lower.includes('cost') || lower.includes('price');
+    });
+
+    const matches = [];
+    for (const line of expenseLines) {
+      let cleanLine = line.replace(/^[-*\d.\s]+/, '').replace(/\*\*/g, '').trim();
+      const amountMatch = cleanLine.match(/(?:₹|\$|rs\.?|inr)\s*([\d,]+(?:\.\d+)?)/i) || 
+                          cleanLine.match(/([\d,]+(?:\.\d+)?)\s*(?:rs\.?|inr|usd)/i) || 
+                          cleanLine.match(/(\d+)/);
+      if (amountMatch) {
+        const amount = parseFloat(amountMatch[1].replace(/,/g, ''));
+        let title = cleanLine.replace(/(?:₹|\$|rs\.?|inr)\s*[\d,]+(?:\.\d+)?/i, '').replace(/[\d,]+(?:\.\d+)?\s*(?:rs\.?|inr|usd)/i, '').trim();
+        title = title.replace(/^[:\-\s]+|[:\-\s]+$/g, '').trim();
+        if (!title) title = "AI Generated Expense";
+        matches.push({ title, amount });
+      }
+    }
+
+    if (matches.length === 0) {
+      alert("No expense items found in this AI suggestion.");
+      return;
+    }
+
+    const wId = selectedWorkspace._id || selectedWorkspace.id;
+    const creatorName = currentUser?.username || 'You';
+    
+    const membersList = Array.isArray(selectedWorkspace.members) ? selectedWorkspace.members : [];
+    const membersNames = membersList.map(m => typeof m === 'object' ? m.username || m.name : String(m));
+    if (membersNames.length === 0) membersNames.push(creatorName);
+    
+    for (const m of matches) {
+      const splitAmount = Math.round((m.amount / membersNames.length) * 100) / 100;
+      const splits = membersNames.map(name => ({
+        user: name,
+        amount: splitAmount
+      }));
+
+      try {
+        await fetch('http://localhost:5000/api/expenses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            workspaceId: wId,
+            title: m.title,
+            amount: m.amount,
+            category: 'Planning',
+            paidBy: creatorName,
+            splitWith: membersNames,
+            splits: splits,
+            date: new Date().toISOString().split('T')[0]
+          })
+        });
+      } catch(e) {
+        console.error('Failed to create extracted expense:', e);
+      }
+    }
+
+    setExtractedAiMessages(p => ({ ...p, [`expense_${text}`]: true }));
+    logActivity(`used AI Planner to extract and split ${matches.length} expenses.`);
+    alert(`Successfully added and split ${matches.length} expenses amongst all members!`);
+  };
+
+  const handlePinLocation = async (loc) => {
+    if (!selectedWorkspace) return;
+    const spaceId = getSpaceId(selectedWorkspace);
+    try {
+      await fetch(`http://localhost:5000/api/spaces/${spaceId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ location: loc })
+      });
+      setSelectedWorkspace(prev => prev ? { ...prev, location: loc } : prev);
+      logActivity(`pinned workspace location to "${loc}".`);
+      alert(`Pinned "${loc}" to Workspace Maps! Switching to Interactive Maps tool...`);
+      setActiveTool('maps');
+    } catch(e) {
+      console.error('Failed to update workspace location:', e);
+    }
+  };
+
   const handleVotePoll = async (pollId, optionIndex) => {
     if (!selectedWorkspace || !currentUser) return;
     const spaceId = getSpaceId(selectedWorkspace);
@@ -190,7 +274,7 @@ export const useWorkspaceCommunication = ({
     currentHeroIndex, heroSlideImages,
     getFilteredMessages,
     handleSendChatMessage, handleFileUpload, handleVoiceNote,
-    handleSendAiMessage, handleExtractTasks,
+    handleSendAiMessage, handleExtractTasks, handleExtractExpenses, handlePinLocation,
     handleVotePoll, handleCreatePoll, submitCreatePoll,
     handleCreateNote, handleSaveNote, handleDeleteNote
   };

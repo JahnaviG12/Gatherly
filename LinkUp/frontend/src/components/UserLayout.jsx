@@ -101,7 +101,8 @@ const UserLayout = () => {
         const readIds = JSON.parse(localStorage.getItem('gatherly_read_notifs') || '[]');
         let spaces = [];
         try {
-          const r = await fetch(`${API}/api/spaces`);
+          const uidStr = userData.email || userData.username;
+          const r = await fetch(`${API}/api/spaces/user/${encodeURIComponent(uidStr)}`);
           spaces = r.ok ? await r.json() : JSON.parse(localStorage.getItem('gatherly_workspaces') || '[]');
         } catch { spaces = JSON.parse(localStorage.getItem('gatherly_workspaces') || '[]'); }
 
@@ -133,6 +134,7 @@ const UserLayout = () => {
 
         // Pending task notifications
         for (const space of spaces) {
+          if (!isUserMember(space)) continue;
           try {
             const r = await fetch(`${API}/api/tasks/workspace/${space._id || space.id}`);
             if (r.ok) (await r.json()).forEach(t => {
@@ -146,6 +148,7 @@ const UserLayout = () => {
 
         // Gallery notifications
         for (const space of spaces) {
+          if (!isUserMember(space)) continue;
           const gallery = JSON.parse(localStorage.getItem(`gallery_${space._id || space.id}`) || '[]');
           if (gallery.length) {
             const recent = gallery[0];

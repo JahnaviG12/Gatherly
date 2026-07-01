@@ -44,9 +44,7 @@ export const useWorkspaceData = () => {
   const [workspaceTasks, setWorkspaceTasks] = useState([]);
   const [workspaceExpenses, setWorkspaceExpenses] = useState([]);
   const [workspaceGallery, setWorkspaceGallery] = useState([]);
-  const [invites, setInvites] = useState([
-    { id: 'inv1', from: 'Sarah Wilson', team: 'Marketing Team', cover: fallbackImages[0] }
-  ]);
+  const [invites, setInvites] = useState([]);
   const [unreadChannels, setUnreadChannels] = useState({});
   const [chatToast, setChatToast] = useState(null);
   const [incomingCall, setIncomingCall] = useState(null);

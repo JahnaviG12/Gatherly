@@ -18,7 +18,10 @@ const WorkspaceFusion = ({ workspace, currentUser, onRefreshWorkspace }) => {
 
   // Fetch all workspaces to filter out ones we can request fusion with
   useEffect(() => {
-    fetch('http://localhost:5000/api/spaces')
+    if (!currentUser) return;
+    const uid = currentUser.email || currentUser.username;
+    if (!uid) return;
+    fetch(`http://localhost:5000/api/spaces/user/${encodeURIComponent(uid)}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -35,7 +38,7 @@ const WorkspaceFusion = ({ workspace, currentUser, onRefreshWorkspace }) => {
         }
       })
       .catch(err => console.error('Error fetching workspaces for fusion', err));
-  }, [workspace]);
+  }, [workspace, currentUser]);
 
   // Merge gallery albums and items stored in LocalStorage for sender and receiver workspaces
   const mergeGalleryData = (senderId, receiverId, newSpaceId, newSpaceName, newSpace) => {
