@@ -332,6 +332,7 @@ export const useWorkspaceData = () => {
     incomingCall, setIncomingCall,
     autoJoinCall, setAutoJoinCall,
     socketRef, activeToolRef, activeChannelRef,
-    fetchFreshestWorkspace
+    fetchFreshestWorkspace,
+    getSpaceId
   };
 };
